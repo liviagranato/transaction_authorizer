@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "49c89270-1286-4cd6-ac44-dd807cdd820c",
+		"name": "Authorizers",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10563988"
+	},
+	"item": [
+		{
+			"name": "Simple Authorizer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"adcde641-a62e-4c26-aa96-bcad76dfa1c9\",\r\n    \"totalAmount\": 1.00,\r\n    \"merchant\": \"Merchant A\",\r\n    \"mcc\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authorizer/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authorizer",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authorizer With Fallback",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"adcde641-a62e-4c26-aa96-bcad76dfa1c9\",\r\n    \"totalAmount\": 11.00,\r\n    \"merchant\": \"Merchant A\",\r\n    \"mcc\": \"5411\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authorizer/fallback",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authorizer",
+						"fallback"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authorizer With Fallback Copy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accountId\": \"adcde641-a62e-4c26-aa96-bcad76dfa1c9\",\r\n    \"totalAmount\": 11.00,\r\n    \"merchant\": \"Merchant A\",\r\n    \"mcc\": \"5411\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/authorizer/merchant",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authorizer",
+						"merchant"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
