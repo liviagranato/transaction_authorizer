@@ -46,20 +46,21 @@ public class AuthorizerFunctions {
 
 		if (hasFallback && isEnoughMoneyAndFoodType.containsKey(false)
 				&& !isEnoughMoneyAndFoodType.get(false).equals(TransactionType.CASH.name())) {
-			isEnoughMoneyByMcc("", totalAmount, account, false); // mcc will be cash and it won't be fallback anymore
+			isEnoughMoneyAndFoodType = isEnoughMoneyByMcc("", totalAmount, account, false); // mcc will be cash and it
+																							// won't be fallback anymore
 		}
 		return isEnoughMoneyAndFoodType;
 	}
 
 	public AuthorizerResponse getResponseCode(Account account, Map<Boolean, String> isEnoughMoneyAndFoodType,
-			Double totalAmount, boolean isMerchantTransaction) {
+			Double totalAmount) throws Exception {
 
 		if (!isEnoughMoneyAndFoodType.containsKey(true)) {
 			return new AuthorizerResponse(TransactionCode.NO_MONEY.getCode());
 		}
 
 		String type = isEnoughMoneyAndFoodType.get(true);
-		Account updatedAccount = updateAndSaveAccount(account, type, totalAmount, isMerchantTransaction);
+		Account updatedAccount = updateAndSaveAccount(account, type, totalAmount);
 
 		if (updatedAccount != null) {
 			return new AuthorizerResponse(TransactionCode.SUCCESS.getCode());
@@ -68,23 +69,26 @@ public class AuthorizerFunctions {
 	}
 
 	private Boolean existsEnoughMoney(Double totalAmount, Double amount) {
-		Double finalAmount = amount - totalAmount;
+		Double finalAmount = getResult(totalAmount, amount);
 		return finalAmount >= Double.valueOf(0);
 	}
 
+	private Double getResult(Double totalAmount, Double amount) {
+		return amount - totalAmount;
+	}
+
 	@Transactional
-	private Account updateAndSaveAccount(Account account, String type, Double totalAmount,
-			boolean isMerchantTransaction) {
+	private Account updateAndSaveAccount(Account account, String type, Double totalAmount) throws Exception {
 
 		switch (type) {
 		case "MEAL":
-			account.setMealAmount(totalAmount);
+			account.setMealAmount(getResult(totalAmount, account.getMealAmount()));
 			break;
 		case "FOOD":
-			account.setFoodAmount(totalAmount);
+			account.setFoodAmount(getResult(totalAmount, account.getFoodAmount()));
 			break;
 		case "CASH":
-			account.setCashAmount(totalAmount);
+			account.setCashAmount(getResult(totalAmount, account.getCashAmount()));
 			break;
 		default:
 			break;

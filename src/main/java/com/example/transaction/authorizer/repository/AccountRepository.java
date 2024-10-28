@@ -11,5 +11,5 @@ import com.example.transaction.authorizer.model.Account;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
 
-	Optional<Account> findByMerchantNameLike(String name);
+	Optional<Account> findByMerchantLike(String name);
 }

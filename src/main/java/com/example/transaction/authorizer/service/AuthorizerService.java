@@ -34,7 +34,11 @@ public class AuthorizerService extends AuthorizerFunctions {
 		Optional<Account> accountOptional = accountRepository.findById(authorizerRequest.getAccountId());
 		if (accountOptional.isPresent()) {
 			Account account = accountOptional.get();
-			return finishTransactionAndGetCode(account, authorizerRequest, false, false);
+			try {
+				return finishTransactionAndGetCode(account, authorizerRequest, false, false);
+			} catch (Exception e) {
+				return new AuthorizerResponse(TransactionCode.TRANSACTION_NOT_PROCESSED.getCode());
+			}
 		}
 
 		return new AuthorizerResponse(TransactionCode.TRANSACTION_NOT_PROCESSED.getCode());
@@ -49,7 +53,11 @@ public class AuthorizerService extends AuthorizerFunctions {
 		Optional<Account> accountOptional = accountRepository.findById(authorizerRequest.getAccountId());
 		if (accountOptional.isPresent()) {
 			Account account = accountOptional.get();
-			return finishTransactionAndGetCode(account, authorizerRequest, true, false);
+			try {
+				return finishTransactionAndGetCode(account, authorizerRequest, true, false);
+			} catch (Exception e) {
+				return new AuthorizerResponse(TransactionCode.TRANSACTION_NOT_PROCESSED.getCode());
+			}
 		}
 
 		return new AuthorizerResponse(TransactionCode.TRANSACTION_NOT_PROCESSED.getCode());
@@ -63,26 +71,30 @@ public class AuthorizerService extends AuthorizerFunctions {
 
 		String merchant = authorizerRequest.getMerchant();
 
-		Optional<Account> accountOptional = accountRepository.findByMerchantNameLike(merchant);
+		Optional<Account> accountOptional = accountRepository.findByMerchantLike(merchant);
 		if (accountOptional.isPresent()) {
 			Account account = accountOptional.get();
 
 			transaction.setMcc(account.getMcc());
 			transactionRepository.save(transaction);
 
-			return finishTransactionAndGetCode(account, authorizerRequest, false, true);
+			try {
+				return finishTransactionAndGetCode(account, authorizerRequest, false, true);
+			} catch (Exception e) {
+				return new AuthorizerResponse(TransactionCode.TRANSACTION_NOT_PROCESSED.getCode());
+			}
 		}
 
 		return new AuthorizerResponse(TransactionCode.TRANSACTION_NOT_PROCESSED.getCode());
 	}
 
 	private AuthorizerResponse finishTransactionAndGetCode(Account account, AuthorizerRequest authorizerRequest,
-			boolean hasFallback, boolean isMerchantTransaction) {
+			boolean hasFallback, boolean isMerchantTransaction) throws Exception {
 
 		String mcc = (isMerchantTransaction) ? account.getMcc() : authorizerRequest.getMcc();
 		Double totalAmount = authorizerRequest.getTotalAmount();
 		Map<Boolean, String> existsEnoughMoney = isEnoughMoneyByMcc(mcc, totalAmount, account, hasFallback);
 
-		return getResponseCode(account, existsEnoughMoney, totalAmount, isMerchantTransaction);
+		return getResponseCode(account, existsEnoughMoney, totalAmount);
 	}
 }

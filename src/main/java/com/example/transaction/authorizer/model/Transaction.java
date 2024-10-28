@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "transaction")
 public class Transaction {
 
 	@Id
@@ -33,13 +35,10 @@ public class Transaction {
 	private String merchant;
 
 	private String mcc;
-	
+
 	public Transaction toTransaction(AuthorizerRequest authorizerRequest) {
-		return Transaction.builder()
-				.accountId(authorizerRequest.getAccountId())
-				.amount(authorizerRequest.getTotalAmount())
-				.merchant(authorizerRequest.getMerchant())
-				.mcc(authorizerRequest.getMcc())
-				.build();
+		return Transaction.builder().accountId(authorizerRequest.getAccountId())
+				.amount(authorizerRequest.getTotalAmount()).merchant(authorizerRequest.getMerchant())
+				.mcc(authorizerRequest.getMcc()).build();
 	}
 }
