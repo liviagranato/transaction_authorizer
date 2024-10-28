@@ -65,13 +65,13 @@
 			"response": []
 		},
 		{
-			"name": "Authorizer With Fallback Copy",
+			"name": "Authorizer Merchant",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"accountId\": \"adcde641-a62e-4c26-aa96-bcad76dfa1c9\",\r\n    \"totalAmount\": 11.00,\r\n    \"merchant\": \"Merchant A\",\r\n    \"mcc\": \"5411\"\r\n}",
+					"raw": "{\r\n    \"accountId\": \"adcde641-a62e-4c26-aa96-bcad76dfa1c9\",\r\n    \"totalAmount\": 1.00,\r\n    \"merchant\": \"Merchant A\",\r\n    \"mcc\": \"0000\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

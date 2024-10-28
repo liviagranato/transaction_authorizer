@@ -46,8 +46,7 @@ public class AuthorizerFunctions {
 
 		if (hasFallback && isEnoughMoneyAndFoodType.containsKey(false)
 				&& !isEnoughMoneyAndFoodType.get(false).equals(TransactionType.CASH.name())) {
-			isEnoughMoneyAndFoodType = isEnoughMoneyByMcc("", totalAmount, account, false); // mcc will be cash and it
-																							// won't be fallback anymore
+			isEnoughMoneyAndFoodType = isEnoughMoneyByMcc("", totalAmount, account, false); // mcc will be cash and it won't be 'fallback' anymore
 		}
 		return isEnoughMoneyAndFoodType;
 	}
