@@ -14,21 +14,20 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthorizerRequest {
 
-	@NotNull
+	@NotNull(message = "is mandatory")
 	@Schema(name = "accountId", description = "Unique account identifier", example = "d61033b7-75fe-4e19-8a96-2eaea05fffd7")
 	private UUID accountId;
 
-	@NotNull
+	@NotNull(message = "is mandatory")
 	@Schema(name = "totalAmount", description = "Total amount available", example = "100.00")
 	private Double totalAmount;
 
-	@NotBlank
+	@NotBlank(message = "is mandatory")
 	@Schema(name = "merchant", description = "Emporium name", example = "PADARIA DO ZE")
 	private String merchant;
 
-	@NotBlank
 	@Schema(name = "mcc", description = "4-digit identifier", example = "1234")
+	@NotBlank(message = "is mandatory")
 	@MccValidation
 	private String mcc;
-
 }
